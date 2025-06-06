@@ -1,75 +1,53 @@
 # JeXps - Tienda de códigos para Steam
 
-JeXps es una tienda en línea para la compra de códigos digitales para Steam, con entregas instantáneas y precios competitivos.
+JeXps es una tienda en línea especializada en la venta de códigos digitales para Steam, con entregas instantáneas y precios competitivos.
 
 ---
 
-## Tecnologías usadas
+## Tecnologías utilizadas
 
-- **Frontend:** React (React Router, React Icons)
-- **Estilos:** Bootstrap 5, CSS personalizado
-- **Backend:** (Pendiente o agrega aquí si tienes API o backend)
-- **Control de versiones:** Git + GitHub
+- **Frontend:** React (con React Router y React Icons)
+- **Estilos:** Bootstrap 5 y CSS personalizado
+- **Control de versiones:** Git y GitHub
+- **Herramientas:** Node.js, npm
+- **Repositorio:** GitHub
 
 ---
 
 ## Estructura del proyecto
 
-- `/src/components` - Componentes reutilizables como Navbar y Footer
-- `/src/pages` - Páginas principales: Home, Cart, Login
-- `/src/App.jsx` - Rutas y estructura principal
-- `/src/App.css` - Estilos globales
-- `/public` - Archivos estáticos
+/src
+/components
+Navbar.jsx
+Footer.jsx
+/pages
+Home.jsx
+Cart.jsx
+Login.jsx
+App.jsx
+App.css
+/public
+.gitignore
+package.json
+README.md
+
+
+- **App.jsx:** Configura las rutas con React Router, e incluye Navbar y Footer en toda la app.
+- **Footer.jsx:** Componente footer con enlaces y redes sociales, estilizado con Bootstrap.
+- **Navbar.jsx:** Componente navbar principal.
+- **Home.jsx, Cart.jsx, Login.jsx:** Páginas de la aplicación.
+- **App.css:** Estilos globales y para asegurar el footer fijo abajo.
 
 ---
 
-## Instalación y ejecución local
+## Funcionalidades implementadas
 
-1. Clona el repositorio:
+- Navegación entre páginas con React Router (`/`, `/cart`, `/login`).
+- Navbar visible en todas las páginas.
+- Footer visible en todas las páginas, con información de contacto y enlaces.
+- Uso de Bootstrap 5 para estilos responsive.
+- CSS personalizado para layout, incluyendo footer fijo al fondo de la página.
+- Footer con iconos de redes sociales usando `react-icons`.
+- Configuración básica de React para proyecto SPA.
 
-```bash
-git clone https://github.com/tu_usuario/jeXps.git
-
-2. Instala dependencias:
-
-bash
-Copiar
-Editar
-cd jeXps
-npm install
-Corre la app en modo desarrollo:
-
-bash
-Copiar
-Editar
-npm start
-Luego abre http://localhost:3000 en tu navegador.
-
-Funcionalidades implementadas
-Navegación con React Router para las páginas Home, Carrito y Login
-
-Navbar responsive con íconos
-
-Footer con información de contacto y enlaces a redes sociales
-
-Estilos aplicados con Bootstrap y CSS personalizado
-
-Configuración del proyecto con estructura modular
-
-Próximos pasos
-Añadir backend con API REST para gestión de usuarios, productos y carrito
-
-Mejorar el diseño y experiencia de usuario
-
-Añadir autenticación y validaciones
-
-Pruebas automatizadas y despliegue en la nube
-
-Contacto
-Para dudas o soporte, contacta a:
-
-GitHub: https://github.com/tu_usuario
-
-Email: tu-email@ejemplo.com
-
-© 2025 JeXps. Todos los derechos reservados.
+---
