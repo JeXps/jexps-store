@@ -8,13 +8,12 @@ function Navbar({ cartCount = 0, authTick }) {
   const [username, setUsername] = useState(null);
   const navigate = useNavigate();
 
-  // ⬇️ Este useEffect se ejecuta cada vez que cambie authTick
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       try {
         const decoded = jwtDecode(token);
-        const nombre = decoded.nombre || decoded.email || decoded.id;
+        const nombre = decoded.username || decoded.email || 'Usuario';
         setUsername(nombre);
       } catch {
         localStorage.removeItem('token');
@@ -27,8 +26,8 @@ function Navbar({ cartCount = 0, authTick }) {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    setUsername(null); // elimina usuario actual
-    navigate('/'); // opcional: redirige al home
+    setUsername(null);
+    navigate('/'); // redirige al home
   };
 
   return (

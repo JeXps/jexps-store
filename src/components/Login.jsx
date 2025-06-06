@@ -25,15 +25,17 @@ function Login({ onAuthChange }) {
         return;
       }
 
-      // Guardar token y notificar el cambio de sesión
+      // ✅ Guardar token
       localStorage.setItem('token', data.token);
 
-      if (onAuthChange) onAuthChange(); // actualiza el estado global del auth
+      // ✅ Notificar cambio de sesión (para actualizar Navbar)
+      if (onAuthChange) onAuthChange();
 
-      // Redirige a productos
+      // ✅ Redirigir a /productos
       navigate('/productos');
 
     } catch (err) {
+      console.error('Login error:', err);
       setError('Error de conexión con el servidor');
     }
   };
@@ -43,17 +45,17 @@ function Login({ onAuthChange }) {
       <h2>Iniciar sesión</h2>
       {error && <div className="alert alert-danger">{error}</div>}
       <form onSubmit={handleSubmit}>
-        <input 
+        <input
           type="email"
-          className="form-control mb-2" 
+          className="form-control mb-2"
           placeholder="Correo electrónico"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <input 
+        <input
           type="password"
-          className="form-control mb-2" 
+          className="form-control mb-2"
           placeholder="Contraseña"
           value={contraseña}
           onChange={(e) => setContraseña(e.target.value)}
