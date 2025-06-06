@@ -1,0 +1,21 @@
+.home-page .hero {
+    background-size: cover;
+    background-position: center;
+    height: 80vh;
+    position: relative;
+  }
+  
+  .home-page .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+  
+  .home-page .content {
+    position: relative;
+    z-index: 2;
+  }
+  
