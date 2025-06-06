@@ -41,7 +41,7 @@ function Navbar({ cartCount = 0 }) {
             </li>
 
             <li className="nav-item">
-              <NavLink to="/carrito" className="nav-link position-relative">
+              <NavLink to="/cart" className="nav-link position-relative">
                 <BsCart3 className="fs-5" />
                 {/* Badge con número de ítems */}
                 {cartCount > 0 && (

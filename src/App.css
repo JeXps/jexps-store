@@ -51,3 +51,8 @@ html, body, #root {
 main {
   flex: 1;
 }
+/* Fondo general oscuro para toda la app */
+body, html, #root, .app-wrapper {
+  background-color: #1c1c1c;
+  color: #f0f0f0;
+}
