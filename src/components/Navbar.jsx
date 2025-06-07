@@ -3,9 +3,12 @@ import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { BsCart3 } from 'react-icons/bs';
 import { FaSteamSymbol } from 'react-icons/fa';
 import { jwtDecode } from 'jwt-decode';
+import './Navbar.css';
 
 function Navbar({ cartCount = 0, authTick }) {
   const [username, setUsername] = useState(null);
+  const [theme, setTheme] = useState('dark');
+  const [hidden, setHidden] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -13,8 +16,7 @@ function Navbar({ cartCount = 0, authTick }) {
     if (token) {
       try {
         const decoded = jwtDecode(token);
-        const nombre = decoded.username || decoded.email || 'Usuario';
-        setUsername(nombre);
+        setUsername(decoded.username || decoded.email || decoded.id);
       } catch {
         localStorage.removeItem('token');
         setUsername(null);
@@ -24,69 +26,62 @@ function Navbar({ cartCount = 0, authTick }) {
     }
   }, [authTick]);
 
+  useEffect(() => {
+    let lastScroll = window.scrollY;
+    const handleScroll = () => {
+      const currentScroll = window.scrollY;
+      setHidden(currentScroll > lastScroll && currentScroll > 80);
+      lastScroll = currentScroll;
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     setUsername(null);
-    navigate('/'); // redirige al home
+    navigate('/');
+  };
+
+  const toggleTheme = () => {
+    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
+    document.body.classList.toggle('light-theme');
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow fixed-top">
-      <div className="container">
-        <Link className="navbar-brand d-flex align-items-center" to="/">
+    <nav className={`navbar-modern ${theme} ${hidden ? 'navbar-hidden' : ''}`}>
+      <div className="navbar-container">
+        <Link className="logo" to="/">
           <FaSteamSymbol className="me-2 fs-3" />
-          <span className="fw-bold">JeXps</span>
+          <span>JeXps</span>
         </Link>
 
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#mainNavbar"
-        >
-          <span className="navbar-toggler-icon"></span>
+        <ul className="nav-links">
+          <li><NavLink to="/" end className="nav-item">Inicio</NavLink></li>
+          <li><NavLink to="/productos" className="nav-item">Productos</NavLink></li>
+          <li>
+            <NavLink to="/cart" className="nav-item cart-icon">
+              <BsCart3 />
+              {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
+            </NavLink>
+          </li>
+
+          {!username ? (
+            <>
+              <li><NavLink to="/login" className="nav-item">Login</NavLink></li>
+              <li><NavLink to="/register" className="nav-item">Registro</NavLink></li>
+            </>
+          ) : (
+            <>
+              <li className="nav-item text-accent">Hola, {username}</li>
+              <li><button onClick={handleLogout} className="nav-item btn-logout">Cerrar sesión</button></li>
+            </>
+          )}
+        </ul>
+
+        <button onClick={toggleTheme} className="theme-toggle">
+          {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-
-        <div className="collapse navbar-collapse" id="mainNavbar">
-          <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-            <li className="nav-item">
-              <NavLink to="/" end className="nav-link">Inicio</NavLink>
-            </li>
-
-            <li className="nav-item">
-              <NavLink to="/productos" className="nav-link">Productos</NavLink>
-            </li>
-
-            <li className="nav-item">
-              <NavLink to="/cart" className="nav-link position-relative">
-                <BsCart3 className="fs-5" />
-                {cartCount > 0 && (
-                  <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark">
-                    {cartCount}
-                  </span>
-                )}
-              </NavLink>
-            </li>
-
-            {!username ? (
-              <>
-                <li className="nav-item">
-                  <NavLink to="/login" className="nav-link">Login</NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink to="/register" className="nav-link">Registro</NavLink>
-                </li>
-              </>
-            ) : (
-              <>
-                <li className="nav-item nav-link text-warning">Hola, {username}</li>
-                <li className="nav-item">
-                  <button onClick={handleLogout} className="btn btn-link nav-link">Cerrar sesión</button>
-                </li>
-              </>
-            )}
-          </ul>
-        </div>
       </div>
     </nav>
   );
