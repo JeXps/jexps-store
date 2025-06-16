@@ -32,6 +32,14 @@ function Productos({ agregarAlCarrito }) {
         {productosFiltrados.map(producto => (
           <div key={producto.id} className="col-md-4 mb-4">
             <div className="card h-100 shadow-sm">
+              {producto.imagen_url && (
+                <img
+                  src={producto.imagen_url}
+                  alt={producto.nombre}
+                  className="card-img-top"
+                  style={{ height: '200px', objectFit: 'cover' }}
+                />
+              )}
               <div className="card-body d-flex flex-column">
                 <h5 className="card-title">{producto.nombre}</h5>
                 <p className="card-text">
