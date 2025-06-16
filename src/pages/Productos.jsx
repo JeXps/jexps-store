@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-function Productos() {
+function Productos({ agregarAlCarrito }) {
+  const [filtro, setFiltro] = useState('');
+
   const productos = [
     { id: 1, nombre: 'Elden Ring', precio: 129000 },
     { id: 2, nombre: 'Red Dead Redemption 2', precio: 89900 },
@@ -16,26 +18,44 @@ function Productos() {
     { id: 12, nombre: 'Stray', precio: 65000 },
   ];
 
+  const productosFiltrados = productos.filter((p) =>
+    p.nombre.toLowerCase().includes(filtro.toLowerCase())
+  );
+
   return (
     <div className="container my-5">
       <h1 className="mb-4">Productos disponibles</h1>
       <p>Encuentra códigos para juegos de Steam con entrega instantánea y precios competitivos.</p>
 
+      <input
+        type="text"
+        className="form-control mb-4"
+        placeholder="Buscar juego..."
+        value={filtro}
+        onChange={(e) => setFiltro(e.target.value)}
+      />
+
       <div className="row">
-        {productos.map(producto => (
+        {productosFiltrados.map((producto) => (
           <div key={producto.id} className="col-md-4 mb-4">
             <div className="card h-100 shadow-sm">
               <div className="card-body d-flex flex-column">
                 <h5 className="card-title">{producto.nombre}</h5>
                 <p className="card-text">
-                  💵 {new Intl.NumberFormat('es-CO', {
+                  💵{' '}
+                  {new Intl.NumberFormat('es-CO', {
                     style: 'currency',
                     currency: 'COP',
                     minimumFractionDigits: 0,
-                    maximumFractionDigits: 0
+                    maximumFractionDigits: 0,
                   }).format(producto.precio)}
                 </p>
-                <button className="btn btn-primary mt-auto">Agregar al carrito</button>
+                <button
+                  className="btn btn-primary mt-auto"
+                  onClick={() => agregarAlCarrito(producto)}
+                >
+                  Agregar al carrito
+                </button>
               </div>
             </div>
           </div>
