@@ -1,4 +1,4 @@
-function Cart({ carrito, confirmarOrden }) {
+function Cart({ carrito, eliminarDelCarrito, aumentarCantidad, disminuirCantidad, confirmarOrden }) {
   const total = carrito.reduce((acc, p) => acc + p.precio * p.cantidad, 0);
 
   return (
@@ -12,14 +12,22 @@ function Cart({ carrito, confirmarOrden }) {
           <ul className="list-group mb-3">
             {carrito.map((producto) => (
               <li key={producto.id} className="list-group-item d-flex justify-content-between align-items-center">
-                {producto.nombre} × {producto.cantidad}
-                <span>
-                  {new Intl.NumberFormat('es-CO', {
-                    style: 'currency',
-                    currency: 'COP',
-                    minimumFractionDigits: 0,
-                  }).format(producto.precio * producto.cantidad)}
-                </span>
+                <div>
+                  <strong>{producto.nombre}</strong> × {producto.cantidad}
+                  <br />
+                  <small>
+                    {new Intl.NumberFormat('es-CO', {
+                      style: 'currency',
+                      currency: 'COP',
+                      minimumFractionDigits: 0,
+                    }).format(producto.precio * producto.cantidad)}
+                  </small>
+                </div>
+                <div className="btn-group">
+                  <button className="btn btn-outline-secondary btn-sm" onClick={() => disminuirCantidad(producto.id)}>-</button>
+                  <button className="btn btn-outline-secondary btn-sm" onClick={() => aumentarCantidad(producto.id)}>+</button>
+                  <button className="btn btn-outline-danger btn-sm" onClick={() => eliminarDelCarrito(producto.id)}>❌</button>
+                </div>
               </li>
             ))}
           </ul>

@@ -24,56 +24,72 @@ function App() {
         return prev.map((p) =>
           p.id === producto.id ? { ...p, cantidad: p.cantidad + 1 } : p
         );
+      } else {
+        return [...prev, { ...producto, cantidad: 1 }];
       }
-      return [...prev, { ...producto, cantidad: 1 }];
     });
   };
 
-  const confirmarOrden = async () => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      alert('Debes iniciar sesión para confirmar la orden');
+  const eliminarDelCarrito = (productoId) => {
+    setCarrito((prev) => prev.filter((p) => p.id !== productoId));
+  };
+
+  const aumentarCantidad = (productoId) => {
+    setCarrito((prev) =>
+      prev.map((p) =>
+        p.id === productoId ? { ...p, cantidad: p.cantidad + 1 } : p
+      )
+    );
+  };
+
+  const disminuirCantidad = (productoId) => {
+    setCarrito((prev) =>
+      prev
+        .map((p) =>
+          p.id === productoId ? { ...p, cantidad: p.cantidad - 1 } : p
+        )
+        .filter((p) => p.cantidad > 0)
+    );
+  };
+
+  const confirmarOrden = () => {
+    if (carrito.length === 0) {
+      alert('Tu carrito está vacío');
       return;
     }
 
-    try {
-      const res = await fetch('http://localhost:4000/api/ordenes', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ productos: carrito }),
-      });
-
-      if (!res.ok) {
-        const error = await res.json();
-        alert('Error al confirmar orden: ' + error.message);
-        return;
-      }
-
-      setCarrito([]);
-      alert('✅ Orden confirmada correctamente');
-    } catch (error) {
-      alert('Error al enviar orden');
-    }
+    console.log('Orden confirmada:', carrito);
+    alert('✅ ¡Orden confirmada!');
+    setCarrito([]); // limpiar carrito
   };
 
   return (
     <BrowserRouter>
       <div className="app-wrapper">
         <Navbar authTick={authTick} />
-
         <main className="flex-grow-1">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/productos" element={<Productos agregarAlCarrito={agregarAlCarrito} />} />
-            <Route path="/cart" element={<Cart carrito={carrito} confirmarOrden={confirmarOrden} />} />
+            <Route
+              path="/productos"
+              element={<Productos agregarAlCarrito={agregarAlCarrito} />}
+            />
+            <Route
+              path="/cart"
+              element={
+                <Cart
+                  carrito={carrito}
+                  eliminarDelCarrito={eliminarDelCarrito}
+                  aumentarCantidad={aumentarCantidad}
+                  disminuirCantidad={disminuirCantidad}
+                  confirmarOrden={confirmarOrden}
+                />
+              }
+            />
             <Route path="/login" element={<Login onAuthChange={handleAuthChange} />} />
             <Route path="/register" element={<Register />} />
           </Routes>
         </main>
-
         <Footer />
       </div>
     </BrowserRouter>
