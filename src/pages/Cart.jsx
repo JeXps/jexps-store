@@ -1,9 +1,11 @@
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import ConfettiSketch from '../components/ConfettiSketch'; // Ruta corregida
 
 function Cart({ carrito, eliminarDelCarrito, aumentarCantidad, disminuirCantidad }) {
   const total = carrito.reduce((acc, p) => acc + p.precio * p.cantidad, 0);
   const navigate = useNavigate();
+  const [ordenExitosa, setOrdenExitosa] = useState(false);
 
   const confirmarOrden = async () => {
     const token = localStorage.getItem('token');
@@ -27,8 +29,10 @@ function Cart({ carrito, eliminarDelCarrito, aumentarCantidad, disminuirCantidad
       const data = await res.json();
 
       if (res.ok) {
-        alert('Orden guardada con éxito ✅');
-        window.location.href = '/productos'; // o redirige a /ordenes
+        setOrdenExitosa(true);
+        setTimeout(() => {
+          window.location.href = '/productos';
+        }, 4000);
       } else {
         alert(data.error || 'Error al guardar orden ❌');
       }
@@ -41,6 +45,8 @@ function Cart({ carrito, eliminarDelCarrito, aumentarCantidad, disminuirCantidad
   return (
     <div className="container mt-4">
       <h2>Carrito de compras</h2>
+
+      {ordenExitosa && <ConfettiSketch />} {/* 🎉 Animación de confeti */}
 
       {carrito.length === 0 ? (
         <p>No hay productos en el carrito aún.</p>
